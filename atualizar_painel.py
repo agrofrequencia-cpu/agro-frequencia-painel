@@ -1,6 +1,5 @@
 import datetime
 import requests
-import yfinance as yf
 
 def obter_dolar_bcb():
     hoje = datetime.date.today().strftime('%m-%d-%Y')
@@ -16,21 +15,9 @@ def obter_dolar_bcb():
         pass
     return "R$ 5,03"
 
-def obter_preco_cafe_arabica():
-    try:
-        ticker = yf.Ticker("KC=F") # Contrato Futuro de Café Arábica na ICE
-        hist = ticker.history(period="5d")
-        if not hist.empty:
-            preco_cpm = hist['Close'].iloc[-1]
-            return f"US$ {preco_cpm:.2f} cpm"
-    except Exception:
-        pass
-    return "US$ 285,40 cpm"
-
 def gerar_html_painel():
     data_atual = datetime.datetime.now().strftime('%d/%m/%Y')
     dolar_val = obter_dolar_bcb()
-    cafe_arabica_val = obter_preco_cafe_arabica()
     
     html_content = f"""<div style="background: #ffffff;border: 1px solid #e2e8f0;padding: 12px;border-radius: 12px;max-width: 100%;margin: 10px auto;font-family: Arial, sans-serif">
 
@@ -53,7 +40,7 @@ def gerar_html_painel():
 </div>
 <div style="background: #f8fafc;border: 1px solid #e2e8f0;padding: 10px;border-radius: 8px">
 <div style="font-size: 10px;color: #64748b;font-weight: 600;text-transform: uppercase">Café Arábica Futuro (ICE)</div>
-<div style="font-size: 14px;font-weight: bold;color: #0f172a;margin-top: 2px">{cafe_arabica_val} <span style="color: #16a34a;font-size: 11px">▲ +1,15%</span></div>
+<div style="font-size: 14px;font-weight: bold;color: #0f172a;margin-top: 2px">US$ 285,40 cpm <span style="color: #16a34a;font-size: 11px">▲ +1,15%</span></div>
 </div>
 <div style="background: #f8fafc;border: 1px solid #e2e8f0;padding: 10px;border-radius: 8px">
 <div style="font-size: 10px;color: #64748b;font-weight: 600;text-transform: uppercase">Diesel S-10 (Média ANP)</div>
@@ -93,7 +80,7 @@ def gerar_html_painel():
 <tr style="border-bottom: 1px solid #f1f5f9;background: #fffbeb">
 <td style="padding: 9px 8px;font-weight: 600;color: #0f172a">☕ Café Arábica Futuro</td>
 <td style="padding: 9px 8px;color: #64748b">ICE Futures US (KC) / B3</td>
-<td style="padding: 9px 8px;font-weight: bold;color: #d97706;white-space: nowrap">{cafe_arabica_val} <span style="color: #16a34a">▲ +1,15%</span></td>
+<td style="padding: 9px 8px;font-weight: bold;color: #d97706;white-space: nowrap">US$ 285,40 cpm <span style="color: #16a34a">▲ +1,15%</span></td>
 <td style="padding: 9px 8px;color: #64748b">Nova York / Referência Global</td>
 </tr>
 <tr style="border-bottom: 1px solid #f1f5f9">
