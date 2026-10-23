@@ -1,0 +1,35 @@
+name: Atualizar Painel Agro Frequência
+
+on:
+  schedule:
+    # Roda automaticamente de segunda a sexta-feira às 20:30 UTC (após o fecho dos mercados)
+    - cron: '30 20 * * 1-5'
+  workflow_dispatch: # Permite disparar manualmente a qualquer momento pelo site do GitHub
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Instalar Dependências
+        run: pip install requests
+
+      - name: Executar Script de Atualização
+        run: python atualizar_painel.py
+
+      - name: Commit e Push Automático para o Repositório
+        run: |
+          git config --global user.name "Robô Agro Frequência"
+          git config --global user.email "robo@agrofrequencia.com"
+          git add painel-agro.html
+          git commit -m "🤖 Atualização automática do Painel de Mercado via Script Python" || echo "Sem alterações novas para commitar"
+          git push
